@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Set the Instance ID and path to the .env file
-INSTANCE_ID="i-030da7d31a1dbbffc"
+# Set the Instance name and Zone
+INSTANCE_NAME="jenkins-node"
+ZONE="us-central1-a"  # e.g., us-central1-a
 
-# Retrieve the public IP address of the specified EC2 instance
-ipv4_address=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+# Retrieve the external IP address of the specified GCP VM instance
+ipv4_address=$(gcloud compute instances describe $INSTANCE_NAME --zone $ZONE --format 'get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 # Path to the .env file
 file_to_find="../backend/.env.docker"
